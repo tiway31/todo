@@ -1,0 +1,93 @@
+.container{
+    display: flex; 
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    
+  }
+  
+  .content{
+    width: 550px;
+    margin-top: 30px;
+    margin-left: 10px;
+    margin-right: 10px;  
+  }
+  
+  @media (max-width: 769px){
+  
+  }
+  
+  @media (min-width: 769px){
+  
+  }
+  
+  .full-width {
+    width: 100%;
+  }
+  
+  .todo-card {
+    margin-bottom: 20px;
+  }
+  
+  .form-todo{
+    max-width: 400px;
+    margin-bottom: 20px;
+  }
+  
+  .todo-header-content{
+    display: flex; 
+    justify-content: space-between;
+  }
+  
+  .todo-header-title{
+    margin: 0 0px;
+    flex: 1 1 auto
+  }
+  
+  .todo-header-actions{
+    margin-left: auto;
+  }
+  
+  .todo-content{
+    display: flex; 
+    justify-content: space-between;
+  }
+  
+  .todo-checkbox{
+    margin: 0 0px;
+    flex: 1 1 auto
+  }
+  
+  .todoactions{
+    margin-left: auto;
+  }
+  
+  .button-action{
+    margin-left: 10px;
+  }
+  
+  .example-container {
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .example-container > * {
+    width: 100%;
+  }
+  
+  .my-form{
+    width: 100%;
+  }
+  
+  .fill-space {
+    flex: 1 1 auto;
+  }
+  
+  .text-through{
+    text-decoration:line-through;
+  }
+  
+  ::ng-deep .mat-tab-header-pagination {
+    display: none !important;
+  }
+
