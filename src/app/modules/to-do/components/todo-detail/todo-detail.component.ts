@@ -12,7 +12,7 @@ export class TodoDetailComponent implements OnInit {
   todoId: string;
   curTodo: Todo;
 
-  constructor(private router: Router,private todoService: TodoService,private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private todoService: TodoService, private activatedRoute: ActivatedRoute) { }
 
   ngOnInit() {
     this.todoId = this.activatedRoute.snapshot.paramMap.get('id');
@@ -23,7 +23,7 @@ export class TodoDetailComponent implements OnInit {
     )
   }
 
-  goBackTodoList(){
+  goBackTodoList() {
     this.router.navigate(['todo/list']);
   }
 }

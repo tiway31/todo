@@ -4,7 +4,6 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, tap, filter } from 'rxjs/operators';
 import { Todo } from '@app/shared/models/todo';
 
-
 @Injectable({
   providedIn: 'root'
 })
@@ -20,7 +19,7 @@ export class TodoService {
           return data.sort((a, b) => (a.status < b.status) ? 1 : -1);
         }),
         catchError(this.handleError)
-      )
+      );
   }
 
   getTodoById(id): Observable<Todo> {

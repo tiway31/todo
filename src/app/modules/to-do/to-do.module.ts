@@ -1,5 +1,9 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { StoreModule } from '@ngrx/store';
+import { EffectsModule } from '@ngrx/effects';
+import { TodoEffects } from '@app/modules/to-do/state/todo.effects';
+import { todoReducer } from '@app/modules/to-do/state/todo.reducer';
 import { ReactiveFormsModule , FormsModule } from '@angular/forms';
 import { ToDoRoutingModule } from './to-do-routing.module';
 import { MaterialModule } from '@app/shared/material.module';
@@ -14,6 +18,8 @@ import { TodoDetailComponent } from './components/todo-detail/todo-detail.compon
     ReactiveFormsModule,
     FormsModule,
     ToDoRoutingModule,
+    StoreModule.forFeature('todoState',  todoReducer),
+    EffectsModule.forFeature([TodoEffects]),
     MaterialModule
   ]
 })

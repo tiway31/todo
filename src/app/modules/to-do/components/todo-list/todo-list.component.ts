@@ -1,8 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormGroupDirective, Validators, FormControl } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormGroupDirective, Validators, FormControl } from '@angular/forms';
+import { Router } from '@angular/router';
 import { TodoService } from '@app/modules/to-do/services/todo.service';
 import { Todo } from '@app/shared/models/todo';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { loadTodos, updateTodoById, createTodo } from '@app/modules/to-do/state/todo.actions';
+import { State } from '@app/modules/to-do/state/todo.state';
 
 @Component({
   selector: 'ads-todo-list',
@@ -11,25 +15,27 @@ import { Todo } from '@app/shared/models/todo';
 })
 export class TodoListComponent implements OnInit {
   todos: Todo[] = [];
-  todosLength = 0;
   maxTodoId = 0;
   todoForm: FormGroup;
   showFormTodo = false;
+  todoState$: Observable<State>;
 
-  constructor(private router: Router, private todoService: TodoService) { }
+  constructor(private router: Router, private todoService: TodoService, private store: Store<{ count: number }>) {
+    this.todoState$ = store.pipe(select('todoState'));
+  }
 
   ngOnInit() {
-    this. todoForm = this.createTodoForm();
+    this.todoForm = this.createTodoForm();
     this.getTodos();
+    this.store.dispatch(loadTodos());
   }
 
   getTodos() {
     this.todoService.getTodos().subscribe(datas => {
-    this.todos = datas;
-    this.todosLength = datas.length;
-    this.maxTodoId = Math.max.apply(Math, this.todos.map(t => t.id))+1;
-    console.log(this.maxTodoId);
-    console.log('todos Array:', this.todos);
+      this.todos = datas;
+      this.maxTodoId = Math.max.apply(Math, this.todos.map(t => t.id)) + 1;
+      // console.log(this.maxTodoId);
+      // console.log('todos Array:', this.todos);
     });
   }
 
@@ -47,16 +53,12 @@ export class TodoListComponent implements OnInit {
   }
 
   createTodo(formDirective: FormGroupDirective) {
-    this.todoForm.patchValue({id: this.maxTodoId, status: 'undone'});
+    this.todoForm.patchValue({ id: this.maxTodoId, status: 'undone' });
     if (this.todoForm.valid) {
-      this.todoService.createTodo(this.todoForm.value)
-        .subscribe(
-          data => {
-              this.handleSuccess(data, formDirective);
-          },
-          error => {
-              this.handleError(error);
-          });
+      this.store.dispatch(createTodo({ payload: this.todoForm.value }));
+      this.todoState$.subscribe(() => {
+        this.handleSuccess(this.todoForm.value, formDirective);
+      });
     }
   }
 
@@ -68,14 +70,10 @@ export class TodoListComponent implements OnInit {
   chechedTodo(evt, todo) {
     if (evt.checked) {
       todo.status = 'done';
-      this.todoService.updateTodoById(todo).subscribe(datas => {
-        this.getTodos();
-      });
+      this.store.dispatch(updateTodoById({ payload: todo }));
     } else {
       todo.status = 'undone';
-      this.todoService.updateTodoById(todo).subscribe(datas => {
-        this.getTodos();
-      });
+      this.store.dispatch(updateTodoById({ payload: todo }));
     }
   }
 
@@ -85,7 +83,7 @@ export class TodoListComponent implements OnInit {
     })
   }
 
-  todoDetail(todo){
+  todoDetail(todo) {
     this.router.navigate(['todo/detail', todo.id]);
     console.log(todo.id);
   }

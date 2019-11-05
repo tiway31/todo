@@ -37,7 +37,7 @@
     </mat-card>
 
     <ng-container *ngIf="(todos.length) ;  else loading;">
-      <mat-card class="todo-card" *ngFor="let todo of todos" style="background-color: beige;">
+      <mat-card class="todo-card" *ngFor="let todo of  (todoState$ | async)?.todos" style="background-color: beige;">
         <mat-card-content>
           <div class="todo-content">
             <span class="todo-checkbox">
