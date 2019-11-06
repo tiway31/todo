@@ -1,11 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormGroupDirective, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TodoService } from '@app/modules/to-do/services/todo.service';
 import { Todo } from '@app/shared/models/todo';
 import { Store, select } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { loadTodos, updateTodoById, createTodo } from '@app/modules/to-do/state/todo.actions';
+import { loadTodos, updateTodoById, createTodo, deleteTodoById } from '@app/modules/to-do/state/todo.actions';
 import { State } from '@app/modules/to-do/state/todo.state';
 
 @Component({
@@ -20,23 +19,17 @@ export class TodoListComponent implements OnInit {
   showFormTodo = false;
   todoState$: Observable<State>;
 
-  constructor(private router: Router, private todoService: TodoService, private store: Store<{ count: number }>) {
+  constructor(private router: Router, private store: Store<State>) {
     this.todoState$ = store.pipe(select('todoState'));
-  }
+   }
 
   ngOnInit() {
     this.todoForm = this.createTodoForm();
-    this.getTodos();
     this.store.dispatch(loadTodos());
   }
 
   getTodos() {
-    this.todoService.getTodos().subscribe(datas => {
-      this.todos = datas;
-      this.maxTodoId = Math.max.apply(Math, this.todos.map(t => t.id)) + 1;
-      // console.log(this.maxTodoId);
-      // console.log('todos Array:', this.todos);
-    });
+    this.store.dispatch(loadTodos());
   }
 
   createTodoForm() {
@@ -53,6 +46,9 @@ export class TodoListComponent implements OnInit {
   }
 
   createTodo(formDirective: FormGroupDirective) {
+    this.todoState$.subscribe(td => {
+      this.maxTodoId = Math.max.apply(Math, td.todos.map(t => t.id)) + 1;
+    });
     this.todoForm.patchValue({ id: this.maxTodoId, status: 'undone' });
     if (this.todoForm.valid) {
       this.store.dispatch(createTodo({ payload: this.todoForm.value }));
@@ -71,21 +67,21 @@ export class TodoListComponent implements OnInit {
     if (evt.checked) {
       todo.status = 'done';
       this.store.dispatch(updateTodoById({ payload: todo }));
+      this.getTodos();
     } else {
       todo.status = 'undone';
       this.store.dispatch(updateTodoById({ payload: todo }));
+      this.getTodos();
     }
   }
 
   deleteTodo(todo) {
-    this.todoService.deleteTodoById(todo.id).subscribe(datas => {
-      this.getTodos();
-    })
+    this.store.dispatch(deleteTodoById({payload: todo.id}));
+    this.getTodos();
   }
 
   todoDetail(todo) {
     this.router.navigate(['todo/detail', todo.id]);
-    console.log(todo.id);
   }
 
   handleSuccess(data, formDirective) {

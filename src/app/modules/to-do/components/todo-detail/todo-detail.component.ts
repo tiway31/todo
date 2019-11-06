@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { TodoService } from '../../services/todo.service';
 import { Todo } from '@app/shared/models/todo';
+import { Store, select } from '@ngrx/store';
+import { Observable } from 'rxjs';
+import { loadTodoById } from '@app/modules/to-do/state/todo.actions';
+import { State } from '@app/modules/to-do/state/todo.state';
 
 @Component({
   selector: 'ads-todo-detail',
@@ -9,18 +12,16 @@ import { Todo } from '@app/shared/models/todo';
   styleUrls: ['./todo-detail.component.scss']
 })
 export class TodoDetailComponent implements OnInit {
-  todoId: string;
-  curTodo: Todo;
+  todoId: number;
+  todoState$: Observable<State>;
 
-  constructor(private router: Router, private todoService: TodoService, private activatedRoute: ActivatedRoute) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute, private store: Store<State>) {
+    this.todoState$ = store.pipe(select('todoState'));
+  }
 
   ngOnInit() {
-    this.todoId = this.activatedRoute.snapshot.paramMap.get('id');
-    this.todoService.getTodoById(this.todoId).subscribe(
-      todo => {
-        this.curTodo = todo;
-      }
-    )
+    this.todoId = parseInt(this.activatedRoute.snapshot.paramMap.get('id'), 10);
+    this.store.dispatch(loadTodoById({payload: this.todoId}));
   }
 
   goBackTodoList() {

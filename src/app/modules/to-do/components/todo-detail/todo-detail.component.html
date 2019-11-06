@@ -10,12 +10,13 @@
                 </span>
             </h2>
         </mat-card>
-        <mat-card class="todo-card" style="background-color: beige;">
-            <mat-card-content *ngIf="curTodo as ctd; else loading">
+
+        <mat-card class="todo-card" style="background-color: beige;"  *ngIf="(todoState$ | async)?.todos.length === 1">
+            <mat-card-content *ngIf="(todoState$ | async)?.todos[0]; else loading">
                 <mat-tab-group>
-                    <mat-tab label="Title"> {{curTodo.title}} </mat-tab>
-                    <mat-tab label="Description" [disabled]="!curTodo.description"> {{curTodo.description}} </mat-tab>
-                    <mat-tab label="Status"> {{curTodo.status}} </mat-tab>
+                    <mat-tab label="Title"> {{ (todoState$ | async)?.todos[0].title }} </mat-tab>
+                    <mat-tab label="Description" [disabled]="!(todoState$ | async)?.todos[0].description"> {{(todoState$ | async)?.todos[0].description }} </mat-tab>
+                    <mat-tab label="Status"> {{ (todoState$ | async)?.todos[0].status }} </mat-tab>
                 </mat-tab-group>
             </mat-card-content>
         </mat-card>
@@ -25,5 +26,7 @@
                 loading...
             </mat-card-content>
         </ng-template>
+
+
     </div>
 </div>

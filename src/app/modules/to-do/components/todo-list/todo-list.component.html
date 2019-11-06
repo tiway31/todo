@@ -36,7 +36,7 @@
       </form>
     </mat-card>
 
-    <ng-container *ngIf="(todos.length) ;  else loading;">
+    <ng-container *ngIf="(todoState$ | async)?.todos.length > 0;  else loading;">
       <mat-card class="todo-card" *ngFor="let todo of  (todoState$ | async)?.todos" style="background-color: beige;">
         <mat-card-content>
           <div class="todo-content">

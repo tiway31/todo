@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { EMPTY } from 'rxjs';
-import { map, mergeMap, switchMap, catchError } from 'rxjs/operators';
+import { map, mergeMap, switchMap, take, catchError } from 'rxjs/operators';
 import { TodoService } from '@app/modules/to-do/services/todo.service';
 import {
     loadTodos,
@@ -9,7 +9,11 @@ import {
     updateTodoById,
     updateTodoByIdSuccess,
     createTodo,
-    createTodoSuccess
+    createTodoSuccess,
+    loadTodoById,
+    loadTodoByIdSuccess,
+    deleteTodoById,
+    deleteTodoByIdSuccess
 } from '@app/modules/to-do/state/todo.actions';
 
 @Injectable()
@@ -20,6 +24,17 @@ export class TodoEffects {
         mergeMap(() => this.todoService.getTodos()
             .pipe(
                 map(todos => loadTodosSuccess({ payload: todos })),
+                catchError(() => EMPTY)
+            ))
+    ));
+
+    loadTodoById$ = createEffect(() => this.actions$.pipe(
+        ofType(loadTodoById),
+        mergeMap(({ payload }) => this.todoService.getTodoById(payload)
+            .pipe(
+                map(todos => {
+                    return loadTodoByIdSuccess({ payload: todos });
+                }),
                 catchError(() => EMPTY)
             ))
     ));
@@ -38,6 +53,15 @@ export class TodoEffects {
         switchMap(({ payload }) => this.todoService.createTodo(payload)
             .pipe(
                 map((todo) => createTodoSuccess({ payload: todo })),
+                catchError(() => EMPTY)
+            ))
+    ));
+
+    deleteTodo$ = createEffect(() => this.actions$.pipe(
+        ofType(deleteTodoById),
+        switchMap(({ payload }) => this.todoService.deleteTodoById(payload)
+            .pipe(
+                map(() => deleteTodoByIdSuccess({ payload })),
                 catchError(() => EMPTY)
             ))
     ));
