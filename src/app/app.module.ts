@@ -12,21 +12,18 @@ import { InMemoryWebApiModule } from 'angular-in-memory-web-api';
 import { InMemoryDataService } from './in-memory-data.service';
 
 import { ToDoModule } from './modules/to-do/to-do.module';
-import { ErrorPageComponent } from './components/error-page/error-page.component';
-
 
 
 @NgModule({
   declarations: [
-    AppComponent,
-    ErrorPageComponent
+    AppComponent
   ],
   imports: [
     BrowserModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     HttpClientModule,
-    InMemoryWebApiModule.forRoot(InMemoryDataService, {  }),
+    InMemoryWebApiModule.forRoot(InMemoryDataService, {}),
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
     StoreDevtoolsModule.instrument({ maxAge: 20 }),

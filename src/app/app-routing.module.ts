@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { ErrorPageComponent } from './components/error-page/error-page.component';
 import { TodoListComponent } from '@app/modules/to-do/components/todo-list/todo-list.component';
 import { TodoDetailComponent } from '@app/modules/to-do/components/todo-detail/todo-detail.component';
 
