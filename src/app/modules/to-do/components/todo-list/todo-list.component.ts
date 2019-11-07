@@ -81,7 +81,7 @@ export class TodoListComponent implements OnInit {
   }
 
   todoDetail(todo) {
-    this.router.navigate(['todo/detail', todo.id]);
+    this.router.navigate(['detail', todo.id]);
   }
 
   handleSuccess(data, formDirective) {

@@ -115,6 +115,10 @@
               "devServerTarget": "project-ads:serve:production"
             }
           }
+        },
+        "deploy": {
+          "builder": "angular-cli-ghpages:deploy",
+          "options": {}
         }
       }
     }

@@ -25,6 +25,6 @@ export class TodoDetailComponent implements OnInit {
   }
 
   goBackTodoList() {
-    this.router.navigate(['todo/list']);
+    this.router.navigate(['list']);
   }
 }
