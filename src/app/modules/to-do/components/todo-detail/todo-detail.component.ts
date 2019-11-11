@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Todo } from '@app/shared/models/todo';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store} from '@ngrx/store';
+import { Observable} from 'rxjs';
 import { loadTodoById } from '@app/modules/to-do/state/todo.actions';
 import { State } from '@app/modules/to-do/state/todo.state';
 
@@ -16,7 +15,7 @@ export class TodoDetailComponent implements OnInit {
   todoState$: Observable<State>;
 
   constructor(private router: Router, private activatedRoute: ActivatedRoute, private store: Store<State>) {
-    this.todoState$ = store.pipe(select('todoState'));
+    this.todoState$ = store.select('todoState');
   }
 
   ngOnInit() {

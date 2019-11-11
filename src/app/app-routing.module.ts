@@ -3,8 +3,6 @@ import { Routes, RouterModule } from '@angular/router';
 import { TodoListComponent } from '@app/modules/to-do/components/todo-list/todo-list.component';
 import { TodoDetailComponent } from '@app/modules/to-do/components/todo-detail/todo-detail.component';
 
-// {path: 'todo', loadChildren: () => import('./modules/to-do/to-do.module').then(m => m.ToDoModule)},
-
 const routes: Routes = [
   {path: '', redirectTo: 'list', pathMatch: 'full'},
   {path: 'list', component: TodoListComponent},

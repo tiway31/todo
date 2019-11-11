@@ -4,7 +4,7 @@
       <h2 class="todo-header-content">
         <span class="todo-header-title" id="todoListTitle">Todo list</span>
         <span class="todo-header-actions">
-          <button mat-mini-fab color="primary" class="button-action" (click)="showTodoForm()" matTooltip="Add a todo"  matTooltipPosition="left">
+          <button mat-mini-fab color="primary" id="buttonShowForm" class="button-action" (click)="showTodoForm()" matTooltip="Add a todo"  matTooltipPosition="left">
             <mat-icon aria-hidden="false" aria-label="add">add_cicle</mat-icon>
           </button>
         </span>
@@ -31,7 +31,7 @@
         </mat-card-content>
         <mat-card-actions class="todo-header-content">
           <span class="fill-space"></span>
-          <span><button mat-raised-button color="primary" type="submit">submit</button></span>
+          <span><button mat-raised-button color="primary" type="submit" id="addTodoSubmit">add</button></span>
         </mat-card-actions>
       </form>
     </mat-card>
@@ -41,11 +41,11 @@
         <mat-card-content>
           <div class="todo-content">
             <span class="todo-checkbox">
-              <mat-checkbox [checked]="todo.status === 'done'" (change)="chechedTodo($event, todo)" [ngClass]="{'text-through': todo.status === 'done'}" class="truncate-cell">{{todo.title | truncate:50}}</mat-checkbox>
+              <mat-checkbox id="chkbx-{{todo.id}}" class="chkstatus" [checked]="todo.status === 'done'" (change)="chechedTodo($event, todo)" [ngClass]="{'text-through': todo.status === 'done'}" class="truncate-cell">{{todo.title | truncate:50}}</mat-checkbox>
             </span>
             <span class="todo-actions">
-              <button mat-mini-fab color="secondary" class="button-action">
-                <mat-icon aria-hidden="false" aria-label="edit" (click)="todoDetail(todo)" matTooltip="Edit detail of this todo id: {{todo.id}}"  matTooltipPosition="above">edit</mat-icon>
+              <button mat-mini-fab color="secondary" class="button-action" >
+                <mat-icon aria-hidden="false" aria-label="edit" id="edit-{{todo.id}}" (click)="todoDetail(todo)" matTooltip="Edit detail of this todo id: {{todo.id}}"  matTooltipPosition="above">edit</mat-icon>
               </button>
               <button mat-mini-fab color="secondary" class="button-action">
                 <mat-icon aria-hidden="false" aria-label="delete" (click)="deleteTodo(todo)" matTooltip="Delete this todo with id: {{todo.id}}"  matTooltipPosition="above">delete</mat-icon>

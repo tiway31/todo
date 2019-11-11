@@ -43,7 +43,7 @@ export class TodoEffects {
         ofType(updateTodoById),
         switchMap(({ payload }) => this.todoService.updateTodoById(payload)
             .pipe(
-                map(() => updateTodoByIdSuccess()),
+                map(() => updateTodoByIdSuccess({ payload })),
                 catchError(() => EMPTY)
             ))
     ));

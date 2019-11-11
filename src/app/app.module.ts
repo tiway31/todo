@@ -26,7 +26,7 @@ import { ToDoModule } from './modules/to-do/to-do.module';
     InMemoryWebApiModule.forRoot(InMemoryDataService, {}),
     StoreModule.forRoot({}),
     EffectsModule.forRoot([]),
-    StoreDevtoolsModule.instrument({ maxAge: 20 }),
+    StoreDevtoolsModule.instrument({ maxAge: 15 }),
     ToDoModule
 
   ],

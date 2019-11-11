@@ -4,23 +4,30 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, map, switchMap, mergeMap, filter } from 'rxjs/operators';
 import { Todo } from '@app/shared/models/todo';
 
+
+
 @Injectable({
   providedIn: 'root'
 })
 export class TodoService {
   private todosUrl = 'api/todos';
+  private optionRequete = {
+    headers: new HttpHeaders({
+      'Access-Control-Allow-Origin': '*',
+      'mon-entete-personnalise':'maValeur'
+    })};
 
   constructor(private http: HttpClient) { }
 
   getTodos(): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.todosUrl)
+    return this.http.get<Todo[]>(this.todosUrl, this.optionRequete)
       .pipe(
         catchError(this.handleError)
       );
   }
 
   getTodoById(id): Observable<Todo[]> {
-    return this.http.get<Todo[]>(this.todosUrl)
+    return this.http.get<Todo[]>(this.todosUrl, this.optionRequete)
       .pipe(
         map(data =>  data.filter(d => d.id === id)),
         catchError(this.handleError)
@@ -28,7 +35,7 @@ export class TodoService {
   }
 
   createTodo(todo: Todo): Observable<Todo> {
-    return this.http.post<Todo>(this.todosUrl, todo)
+    return this.http.post<Todo>(this.todosUrl, todo, this.optionRequete)
       .pipe(
         map(data => data),
         catchError(this.handleError)
@@ -36,14 +43,14 @@ export class TodoService {
   }
 
   updateTodoById(todo: Todo): Observable<Todo> {
-    return this.http.put<Todo>(`${this.todosUrl}/${todo.id}`, todo)
+    return this.http.put<Todo>(`${this.todosUrl}/${todo.id}`, todo, this.optionRequete)
       .pipe(
         catchError(this.handleError)
       );
   }
 
-  deleteTodoById(id: number): Observable<Todo> {
-    return this.http.delete<Todo>(`${this.todosUrl}/${id}`)
+  deleteTodoById(todo: Todo): Observable<Todo> {
+    return this.http.delete<Todo>(`${this.todosUrl}/${todo.id}`, this.optionRequete)
       .pipe(
         catchError(this.handleError)
       );

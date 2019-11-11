@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormGroupDirective, Validators, FormControl } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Todo } from '@app/shared/models/todo';
-import { Store, select } from '@ngrx/store';
-import { Observable } from 'rxjs';
+import { Store} from '@ngrx/store';
+import { Observable} from 'rxjs';
 import { loadTodos, updateTodoById, createTodo, deleteTodoById } from '@app/modules/to-do/state/todo.actions';
 import { State } from '@app/modules/to-do/state/todo.state';
+
 
 @Component({
   selector: 'ads-todo-list',
@@ -13,22 +13,17 @@ import { State } from '@app/modules/to-do/state/todo.state';
   styleUrls: ['./todo-list.component.scss']
 })
 export class TodoListComponent implements OnInit {
-  todos: Todo[] = [];
   maxTodoId = 0;
   todoForm: FormGroup;
   showFormTodo = false;
   todoState$: Observable<State>;
 
   constructor(private router: Router, private store: Store<State>) {
-    this.todoState$ = store.pipe(select('todoState'));
-   }
+    this.todoState$ = store.select('todoState');
+  }
 
   ngOnInit() {
     this.todoForm = this.createTodoForm();
-    this.store.dispatch(loadTodos());
-  }
-
-  getTodos() {
     this.store.dispatch(loadTodos());
   }
 
@@ -47,7 +42,9 @@ export class TodoListComponent implements OnInit {
 
   createTodo(formDirective: FormGroupDirective) {
     this.todoState$.subscribe(td => {
-      this.maxTodoId = Math.max.apply(Math, td.todos.map(t => t.id)) + 1;
+      if (td.todos.length > 0) {
+        this.maxTodoId = Math.max.apply(Math, td.todos.map(t => t.id)) + 1;
+      }
     });
     this.todoForm.patchValue({ id: this.maxTodoId, status: 'undone' });
     if (this.todoForm.valid) {
@@ -67,17 +64,14 @@ export class TodoListComponent implements OnInit {
     if (evt.checked) {
       todo.status = 'done';
       this.store.dispatch(updateTodoById({ payload: todo }));
-      this.getTodos();
     } else {
       todo.status = 'undone';
       this.store.dispatch(updateTodoById({ payload: todo }));
-      this.getTodos();
     }
   }
 
   deleteTodo(todo) {
-    this.store.dispatch(deleteTodoById({payload: todo.id}));
-    this.getTodos();
+    this.store.dispatch(deleteTodoById({ payload: todo }));
   }
 
   todoDetail(todo) {
@@ -89,7 +83,6 @@ export class TodoListComponent implements OnInit {
     this.todoForm.reset();
     formDirective.resetForm();
     this.showTodoForm();
-    this.getTodos();
   }
 
   handleError(error) {

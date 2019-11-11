@@ -8,10 +8,12 @@ export const loadTodoById = createAction('[Todo ById Page] Load', props<{ payloa
 export const loadTodoByIdSuccess = createAction('[Todo ById API] Todo Loaded Success', props<{ payload: Todo[]}>());
 
 export const updateTodoById = createAction('[Todo Page] Update', props<{ payload: Todo}>());
-export const updateTodoByIdSuccess = createAction('[Todo API] Todo Updated Success');
+export const updateTodoByIdSuccess = createAction('[Todo API] Todo Updated Success', props<{ payload: Todo}>());
+
+export const deleteTodoById = createAction('[Todo Page] Delete', props<{ payload: Todo}>());
+export const deleteTodoByIdSuccess = createAction('[Todo API] Todo Deleted Success', props<{ payload: Todo}>());
 
 export const createTodo = createAction('[Todo Page] Create', props<{ payload: Todo}>());
 export const createTodoSuccess = createAction('[Todo API] Todo Created Success', props<{ payload: Todo}>());
 
-export const deleteTodoById = createAction('[Todo deleteById Page] Load', props<{ payload: number}>());
-export const deleteTodoByIdSuccess = createAction('[Todo deleteById API] Todo Loaded Success', props<{ payload: number}>());
+
